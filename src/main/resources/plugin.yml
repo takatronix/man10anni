@@ -14,3 +14,6 @@ commands:
     anniexchange:
         description: AnniXpをアイテムに交換 Exchange AnniXp to special item
         usage: /anniexchange
+    configreload:
+        description: reloads config (test)
+        usage: /configreload
