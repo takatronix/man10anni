@@ -26,7 +26,6 @@ public final class man10anni extends JavaPlugin implements Listener {
             //takatornix追加 shoありがと
 
 
-
         }
         return true;
     }
