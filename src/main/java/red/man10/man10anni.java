@@ -11,7 +11,6 @@ public final class man10anni extends JavaPlugin implements Listener {
     public void onEnable() {
         // Plugin startup logic
         this.getServer().getPluginManager().registerEvents(this, this);
-
     }
 
     @Override
@@ -23,7 +22,6 @@ public final class man10anni extends JavaPlugin implements Listener {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("annitop")) {
             //annitop 処理 by sho0
-            //    takatornix追加 shoありがと
         }
         return true;
     }
