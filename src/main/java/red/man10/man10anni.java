@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public final class man10anni extends JavaPlugin implements Listener {
 
@@ -24,7 +25,7 @@ public final class man10anni extends JavaPlugin implements Listener {
         if (cmd.getName().equalsIgnoreCase("annitop")) {
             //annitop 処理 by sho0
             //takatornix追加 shoありがと
-
+            PermissionsEx e = new PermissionsEx();
         }
         return true;
     }
