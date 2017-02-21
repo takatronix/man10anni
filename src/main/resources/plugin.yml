@@ -13,4 +13,4 @@ commands:
         usage: /annixp [Player]
     anniget:
         description: AnniXpをアイテムに交換 / Exchange AnniXp to SpecialItem
-        usage: /annigetitem [name]
+        usage: /anniexchange
