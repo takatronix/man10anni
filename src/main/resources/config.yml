@@ -1,4 +1,4 @@
-//server config
+#server config
 ssh_port: 22
 ssh_id:
 ssh_pass:
