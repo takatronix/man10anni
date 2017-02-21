@@ -1,9 +1,11 @@
 //server config
-server_ip:
-server_port:
-ssh_port:
+ssh_port: 22
 ssh_id:
 ssh_pass:
-mysql_id:
+mysql_ip: localhost
+mysql_port: 3306
+mysql_id: root
 mysql_pass:
+db_name: dbname
 item_xp:
+

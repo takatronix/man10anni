@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="man10anni:jar">
-    <output-path>$USER_HOME$/Desktop/XDS/spigot 1.11.2/plugins</output-path>
+  <artifact type="jar" build-on-make="true" name="man10anni:jar">
+    <output-path>$PROJECT_DIR$/../../1.11.2/plugins</output-path>
     <root id="archive" name="man10anni.jar">
       <element id="module-output" name="man10anni" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />
