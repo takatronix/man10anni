@@ -9,8 +9,8 @@ commands:
         description: トップAnniPlayerを表示 / Show Top Anni players
         usage: /annitop [number of top players]
     annixp:
-        description: Anni XPを表示 / Show anni xp
+        description: Anni XPを表示 / Show AnniXp
         usage: /annixp [Player]
-    anniget:
+    anniexchange:
         description: AnniXpをアイテムに交換 / Exchange AnniXp to SpecialItem
         usage: /anniexchange
