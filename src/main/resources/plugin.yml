@@ -1,0 +1,6 @@
+name: Man10Anni
+version: ${project.version}
+main: red.man10.man10anni
+authors: [takatronix]
+description: Man10 Anni Plugin
+website: http://man10.red
