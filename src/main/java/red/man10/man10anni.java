@@ -35,7 +35,7 @@ public final class man10anni extends JavaPlugin implements Listener {
                 //権限があったらここに来る
                 p.sendMessage("you have permission");
             }else{
-                //無かったら
+                //無かったらこっち
                 p.sendMessage("you don't have permission");
             }
         }else if(cmd.getName().equalsIgnoreCase("configreload")){
