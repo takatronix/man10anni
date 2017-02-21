@@ -4,3 +4,13 @@ main: red.man10.man10anni
 authors: [takatronix]
 description: Man10 Anni Plugin
 website: http://man10.red
+commands:
+    annitop:
+        description: トップAnniPlayerを表示 / Show Top Anni players
+        usage: /annitop [number of top players]
+    annixp:
+        description: Anni XPを表示 / Show anni xp
+        usage: /annixp [Player]
+    anniget:
+        description: AnniXpをアイテムに交換 Exchange AnniXp to SpecialItem
+        usage: /annigetitem [name]
