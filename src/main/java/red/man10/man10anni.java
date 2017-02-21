@@ -27,6 +27,7 @@ public final class man10anni extends JavaPlugin implements Listener {
             //takatornix追加 shoありがと
             PermissionsEx e = new PermissionsEx();
             //  ビルドできたぽい -> discord通知テスト２
+            //　discord 通知テスト by sho
         }
         return true;
     }
