@@ -1,3 +1,4 @@
+//server config
 server_ip:
 server_port:
 ssh_port:
