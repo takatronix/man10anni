@@ -12,5 +12,5 @@ commands:
         description: Anni XPを表示 / Show AnniXp
         usage: /annixp [Player]
     anniexchange:
-        description: AnniXpをアイテムに交換 / Exchange AnniXp to SpecialItem
+        description: AnniXpをアイテムに交換 / Exchange AnniXp to special item
         usage: /anniexchange
