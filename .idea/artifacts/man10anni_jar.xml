@@ -4,6 +4,8 @@
     <root id="archive" name="man10anni.jar">
       <element id="module-output" name="man10anni" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />
+      <element id="library" level="project" name="mysql:mysql-connector-java:6.0.5" />
+      <element id="library" level="project" name="com.jcraft:jsch:0.1.53" />
     </root>
   </artifact>
 </component>

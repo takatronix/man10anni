@@ -1,6 +1,9 @@
 package red.man10;
 
 
+import com.jcraft.jsch.JSch;
+
+import com.jcraft.jsch.Session;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,6 +14,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.sql.*;
+import java.util.Properties;
 
 
 public final class man10anni extends JavaPlugin implements Listener {
@@ -23,6 +27,7 @@ public final class man10anni extends JavaPlugin implements Listener {
     String db_name = this.getConfig().getString("db_name");
 
     String ssh_port = this.getConfig().getString("ssh_port");
+    String ssh_ip = this.getConfig().getString("ssh_ip");
     String ssh_id = this.getConfig().getString("ssh_id");
     String ssh_pass = this.getConfig().getString("ssh_pass");
     String item_xp = this.getConfig().getString("item_xp");
@@ -58,7 +63,8 @@ public final class man10anni extends JavaPlugin implements Listener {
         if(cmd.getName().equalsIgnoreCase("manni")){
 
             //      test
-            this.serverTest(p);
+            this.sshTest(p);
+            this.mysqlTest(p);
 /*
             if(args.length >= 1){
                 if(args[0].equalsIgnoreCase("help")){
@@ -93,6 +99,7 @@ public final class man10anni extends JavaPlugin implements Listener {
         mysql_port = this.getConfig().getString("mysql_port");
         mysql_id = this.getConfig().getString("mysql_id");
         mysql_pass = this.getConfig().getString("mysql_pass");
+        ssh_ip = this.getConfig().getString("ssh_ip");
         ssh_port = this.getConfig().getString("ssh_port");
         ssh_id = this.getConfig().getString("ssh_id");
         ssh_pass = this.getConfig().getString("ssh_pass");
@@ -102,8 +109,37 @@ public final class man10anni extends JavaPlugin implements Listener {
 
         getLogger().info(db_name);
     }
-    Connection con = null;
-    public void serverTest(Player p){
+
+    Connection con = null;          //  mysql connection
+    Session session = null;         //  ssh session
+
+    public void sshTest(Player p) {
+
+        p.sendMessage("ssh connecting");
+        final JSch jsch = new JSch();
+        try{
+            session = jsch.getSession(ssh_id, ssh_ip, Integer.parseInt(ssh_port));
+            session.setPassword(ssh_pass);
+
+            final Properties config = new Properties();
+            //config.put("StrictHostKeyChecking", "no");
+            //session.setConfig(config);
+
+            session.connect();
+            //      ポートフォワーディング
+            session.setPortForwardingL(Integer.parseInt(mysql_port), mysql_ip, Integer.parseInt(mysql_port));
+            p.sendMessage("ssh connected");
+        } catch(Exception ex) {
+            p.sendMessage("ssh connect error");
+        }
+        finally {
+
+            p.sendMessage("ssh connect error");
+        }
+
+
+    }
+    public void mysqlTest(Player p){
 
         //          MySQLに接続
         try{
