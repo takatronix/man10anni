@@ -4,7 +4,8 @@ package red.man10;
 import com.jcraft.jsch.JSch;
 
 import com.jcraft.jsch.Session;
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,26 +13,39 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 
 public final class man10anni extends JavaPlugin implements Listener {
 
+    //general config
+    String prefix = this.getConfig().getString("pluginprefix").replace("&", "§");
 
-    String mysql_ip = this.getConfig().getString("mysql_ip");
-    String mysql_port = this.getConfig().getString("mysql_port");
-    String mysql_id = this.getConfig().getString("mysql_id");
-    String mysql_pass = this.getConfig().getString("mysql_pass");
-    String db_name = this.getConfig().getString("db_name");
+    //mysql config
+    String mysql_ip = this.getConfig().getString("server_config.mysql_ip");
+    String mysql_port = this.getConfig().getString("server_config.mysql_port");
+    String mysql_id = this.getConfig().getString("server_config.mysql_id");
+    String mysql_pass = this.getConfig().getString("server_config.mysql_pass");
+    String db_name = this.getConfig().getString("server_config.db_name");
 
-    String ssh_port = this.getConfig().getString("ssh_port");
-    String ssh_ip = this.getConfig().getString("ssh_ip");
-    String ssh_id = this.getConfig().getString("ssh_id");
-    String ssh_pass = this.getConfig().getString("ssh_pass");
-    String item_xp = this.getConfig().getString("item_xp");
+    //ssh config
+    String ssh_port = this.getConfig().getString("server_config.ssh_port");
+    String ssh_ip = this.getConfig().getString("server_config.ssh_ip");
+    String ssh_id = this.getConfig().getString("server_config.ssh_id");
+    String ssh_pass = this.getConfig().getString("server_config.ssh_pass");
+    String item_xp = this.getConfig().getString("server_config.item_xp");
 
+    //item config
+    int id = this.getConfig().getInt("reward_item.itemID");
+    List<String> coloredLore = new ArrayList<String>();
+    List<String> lore = this.getConfig().getStringList("reward_item.item_lore");
+    String displayname = this.getConfig().getString("reward_item.display_name");
 
     @Override
     public void onEnable() {
@@ -39,48 +53,110 @@ public final class man10anni extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(this, this);
         getLogger().info("annixp has been enabled");
         this.saveDefaultConfig();
+        itemConfigReload();
+        configReload();
     }
-
     @Override
     public void onDisable() {
         getLogger().info("annixp has been disabled");
         // Plugin shutdown logic
     }
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player p = (Player) sender;
-        configReload();
-        p.sendMessage("manni test");
+        //p.sendMessage("manni test");
         /*
         if (cmd.getName().equalsIgnoreCase("annitop")) {
             //action annitop command
-
         }else
-
         */
-     //   p.sendMessage(cmd.getName());
-        if(cmd.getName().equalsIgnoreCase("manni")){
-
+        //   p.sendMessage(cmd.getName());
+        if(cmd.getName().equalsIgnoreCase("manni")) {
             //      test
-            this.sshTest(p);
-            this.mysqlTest(p);
-/*
-            if(args.length >= 1){
-                if(args[0].equalsIgnoreCase("help")){
+            // this.sshTest(p);
+            // this.mysqlTest(p);
+            if (args.length >= 1) {
+                if (args[0].equalsIgnoreCase("help")) {
                     //action manni help command
+                    p.sendMessage("§d=§f=§a=§d=§f=§a=§d=§f=§a=§f[§9§lMan10 anni§f]§d=§f=§a=§d=§f=§a=§d=§f=§a=");
+                    p.sendMessage("");
+                    p.sendMessage("§d/manni help コマンド一覧");
+                    p.sendMessage("§d/manni reload コンフィグの再読み込み");
+                    p.sendMessage("§d/manni rget <ammount> コンフィグに書かれているアイテムを渡す"); //開発段階用コマンド
+                    p.sendMessage("");
+                    p.sendMessage("§d=§f=§a=§d=§f=§a=§d=§f=§a=§d=§f=§a=§d=§f=§a=§d=§f=§a=§d=§f=§a=§d=§f=§a=§d=§f=§a=§d=§f=§a=");
+                } else if (args[0].equalsIgnoreCase("reload")) {
 
-                }else if(args[0].equalsIgnoreCase("reload")){
                     configReload();
-                    p.sendMessage("reloaded config");
+                    itemConfigReload();
+                    p.sendMessage(prefix + " リロードが完了しました。");
+                } else if (args[0].equalsIgnoreCase("rget")) {
+                    if (args.length == 2) {
+                        try {
+                            int ammount = Integer.parseInt(args[1]);
+                            giveItem(p, id, ammount);
+                        } catch (NumberFormatException e) {
+                            p.sendMessage(prefix + " §d<ammount>には数字を入力してください。");
+                            return true;
+                        }
+                    } else {
 
+                        p.sendMessage(prefix + "§dコマンドの使い方が間違ってます /manni rget <個数>");
+                    }
+                } else {
+                    p.sendMessage(prefix + " §d/manni help コマンドの一覧");
                 }
+            }
+            if(args.length == 0){
+                p.sendMessage(prefix + " §d/manni help コマンドの一覧");
 
-            }else{
-                p.sendMessage("wrong command usage do /manni help for a list of commands");
-            }*/
+            }
         }
         return true;
+    }
+
+    public void giveItem(Player p,int id, int ammount){
+        //ItemStack で新規にアイテムを作成
+        Material m = Material.getMaterial(id);
+        ItemStack item = new ItemStack(m, ammount);
+        ItemMeta itemim = item.getItemMeta();
+        //エンチャントはのちのち追加します。
+        //ItemMetaを設定
+        itemim.setDisplayName(displayname);
+        itemim.setLore(coloredLore);
+        //ItemMeta を ItemStackに関連付け
+        item.setItemMeta(itemim);
+        //アイテムをプレイヤーインベントリに追加
+        p.getInventory().addItem(item);
+    }
+
+    public void configReload(){
+        this.reloadConfig();
+        prefix = this.getConfig().getString("pluginprefix").replace("&", "§");
+        mysql_ip = this.getConfig().getString("server_config.mysql_ip");
+        mysql_port = this.getConfig().getString("server_config.mysql_port");
+        mysql_id = this.getConfig().getString("server_config.mysql_id");
+        mysql_pass = this.getConfig().getString("server_config.mysql_pass");
+        ssh_ip = this.getConfig().getString("server_config.ssh_ip");
+        ssh_port = this.getConfig().getString("server_config.ssh_port");
+        ssh_id = this.getConfig().getString("server_config.ssh_id");
+        ssh_pass = this.getConfig().getString("server_config.ssh_pass");
+        item_xp = this.getConfig().getString("server_config.item_xp");
+        db_name = this.getConfig().getString("server_config.db_name");
+        getLogger().info("reloaded");
+        // getLogger().info(db_name);
+    }
+    public void itemConfigReload(){
+        lore.clear();
+        coloredLore.clear();
+
+        id = this.getConfig().getInt("reward_item.itemID");
+        lore = this.getConfig().getStringList("reward_item.item_lore");
+        displayname = this.getConfig().getString("reward_item.display_name");
+        displayname = ChatColor.translateAlternateColorCodes('&', displayname);
+        for(String s : lore){
+            coloredLore.add(ChatColor.translateAlternateColorCodes('&', s));
+        }
     }
 
     @EventHandler
@@ -89,26 +165,12 @@ public final class man10anni extends JavaPlugin implements Listener {
     }
     @EventHandler
     public void onPlayerLogout(PlayerQuitEvent event) {
-
         getLogger().info("logged quit");
     }
 
-    public void configReload(){
-        this.reloadConfig();
-        mysql_ip = this.getConfig().getString("mysql_ip");
-        mysql_port = this.getConfig().getString("mysql_port");
-        mysql_id = this.getConfig().getString("mysql_id");
-        mysql_pass = this.getConfig().getString("mysql_pass");
-        ssh_ip = this.getConfig().getString("ssh_ip");
-        ssh_port = this.getConfig().getString("ssh_port");
-        ssh_id = this.getConfig().getString("ssh_id");
-        ssh_pass = this.getConfig().getString("ssh_pass");
-        item_xp = this.getConfig().getString("item_xp");
-        db_name = this.getConfig().getString("db_name");
-        getLogger().info("reloaded");
 
-        getLogger().info(db_name);
-    }
+    //以下DB処理
+
 
     Connection con = null;          //  mysql connection
     Session session = null;         //  ssh session
@@ -160,5 +222,6 @@ public final class man10anni extends JavaPlugin implements Listener {
             }
         }
     }
+
 
 }

@@ -1,12 +1,30 @@
+pluginprefix: '&f[&9&lMan10 Anni&f]'
 #server config
-ssh_ip:
-ssh_port: 22
-ssh_id:
-ssh_pass:
-mysql_ip: localhost
-mysql_port: 3306
-mysql_id: root
-mysql_pass:
-db_name: dbname
-item_xp:
-
+server_config:
+ ssh_ip:
+ ssh_port: 22
+ ssh_id:
+ ssh_pass:
+ mysql_ip: localhost
+ mysql_port: 3306
+ mysql_id: root
+ mysql_pass:
+ db_name: dbname
+ item_xp:
+#reward item config
+reward_item:
+ itemID: 264
+ display_name: '&6テスト景品'
+ item_lore:
+   - '普通のアイテムロア'
+   - '&4色付きアイテムロア'
+   - '&9実'
+   - '&9質'
+   - '&9何'
+   - '&9行'
+   - '&9で'
+   - '&9も'
+   - '&9追'
+   - '&9加'
+   - '&9可'
+   - '&9能'

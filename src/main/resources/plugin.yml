@@ -16,4 +16,4 @@ commands:
         usage: /anniexchange
     manni:
         description: man10 anni command
-        usage: /manni help
+        usage: /manni
