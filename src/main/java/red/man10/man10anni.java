@@ -42,7 +42,7 @@ public final class man10anni extends JavaPlugin implements Listener {
     String item_xp = this.getConfig().getString("server_config.item_xp");
 
     //item config
-    int id = this.getConfig().getInt("reward_item.itemID");
+    String id = this.getConfig().getString("reward_item.itemID");
     List<String> coloredLore = new ArrayList<String>();
     List<String> lore = this.getConfig().getStringList("reward_item.item_lore");
     String displayname = this.getConfig().getString("reward_item.display_name");
@@ -94,9 +94,9 @@ public final class man10anni extends JavaPlugin implements Listener {
                     if (args.length == 2) {
                         try {
                             int ammount = Integer.parseInt(args[1]);
-                            giveItem(p, id, ammount);
+                            giveItem(p, Integer.parseInt(id), ammount);
                         } catch (NumberFormatException e) {
-                            p.sendMessage(prefix + " §d<ammount>には数字を入力してください。");
+                            p.sendMessage(prefix + " §d数字的エラー");
                             return true;
                         }
                     } else {
@@ -116,10 +116,10 @@ public final class man10anni extends JavaPlugin implements Listener {
     }
 
     public void giveItem(Player p,int id, int ammount){
-        //ItemStack で新規にアイテムを作成
-        Material m = Material.getMaterial(id);
-        ItemStack item = new ItemStack(m, ammount);
-        ItemMeta itemim = item.getItemMeta();
+            //ItemStack で新規にアイテムを作成
+            Material m = Material.getMaterial(id);
+            ItemStack item = new ItemStack(m, ammount);
+            ItemMeta itemim = item.getItemMeta();
         //エンチャントはのちのち追加します。
         //ItemMetaを設定
         itemim.setDisplayName(displayname);
@@ -129,7 +129,6 @@ public final class man10anni extends JavaPlugin implements Listener {
         //アイテムをプレイヤーインベントリに追加
         p.getInventory().addItem(item);
     }
-
     public void configReload(){
         this.reloadConfig();
         prefix = this.getConfig().getString("pluginprefix").replace("&", "§");
@@ -147,10 +146,11 @@ public final class man10anni extends JavaPlugin implements Listener {
         // getLogger().info(db_name);
     }
     public void itemConfigReload(){
+        this.reloadConfig();
         lore.clear();
         coloredLore.clear();
 
-        id = this.getConfig().getInt("reward_item.itemID");
+        id = this.getConfig().getString("reward_item.itemID");
         lore = this.getConfig().getStringList("reward_item.item_lore");
         displayname = this.getConfig().getString("reward_item.display_name");
         displayname = ChatColor.translateAlternateColorCodes('&', displayname);
